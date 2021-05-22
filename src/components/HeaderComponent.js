@@ -10,7 +10,7 @@ class Header extends Component {
         super(props);
         this.state = {
             isNavOpen: false,
-            isModalOpen: false
+            isModalOpen: false,
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -41,6 +41,7 @@ class Header extends Component {
     handleGoogleLogin(event) {
         this.toggleModal();
         this.props.googleLogin();
+        this.setState({ redirect : this.state.redirect })
         event.preventDefault();
     }
 
@@ -88,7 +89,7 @@ class Header extends Component {
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    { !this.props.auth.isAuthenticated ?
+                                    { !this.props.auth.user ?
                                         <Button outline onClick={this.toggleModal}>
                                             <span className="fa fa-sign-in fa-lg"></span> Login
                                             {this.props.auth.isFetching ?
@@ -97,7 +98,7 @@ class Header extends Component {
                                             }
                                         </Button>
                                         :
-                                        <div>
+                                        <div className="d-flex flex-row" style={{marginLeft:"13em"}}>
                                         <div className="navbar-text mr-3">{this.props.auth.user.displayName}</div>
                                         <Button outline onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout

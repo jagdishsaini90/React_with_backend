@@ -70,7 +70,6 @@ class Main extends Component {
         />
       );
     }
-
     const DishWithId = ({match}) => {
       return(
         (this.props.auth.isAuthenticated && this.props.favorites.favorites)

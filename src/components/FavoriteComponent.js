@@ -5,7 +5,7 @@ import { Loading } from './LoadingComponent';
 
 function RenderMenuItem({ dish, deleteFavorite }) {
     return(
-        <Media tag="li">
+        <Media tag="li" style={{listStyle:"none"}}>
             <Media left middle>
                 <Media object src={dish.image} alt={dish.name} />
             </Media>

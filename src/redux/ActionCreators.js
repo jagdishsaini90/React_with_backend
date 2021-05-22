@@ -177,14 +177,14 @@ export const requestLogin = () => {
 export const receiveLogin = (user) => {
     return {
         type: ActionTypes.LOGIN_SUCCESS,
-        user
+        payload : user
     }
 }
   
 export const loginError = (message) => {
     return {
         type: ActionTypes.LOGIN_FAILURE,
-        message
+        payload : message
     }
 }
 

@@ -6,7 +6,7 @@ import { Fade, Stagger } from 'react-animation-components';
 
 function RenderLeader({leader}) {
     return(
-        <Media tag="li">
+        <Media tag="li" style={{listStyle:"none"}}>
             <Media left middle>
                 <Media object src={leader.image} alt={leader.name} />
             </Media>
@@ -34,7 +34,7 @@ function LeaderList(props) {
 
     if (props.leaders.isLoading) {
         return(
-                <Loading />
+            <Loading />
         );
     }
     else if (props.leaders.errMess) {
@@ -98,10 +98,6 @@ function About(props) {
                             <blockquote className="blockquote">
                                 <p className="mb-0">You better cut the pizza in four pieces because
                                     I'm not hungry enough to eat six.</p>
-                                <footer className="blockquote-footer">Yogi Berra,
-                                <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
-                                    P. Pepe, Diversion Books, 2014</cite>
-                                </footer>
                             </blockquote>
                         </CardBody>
                     </Card>
