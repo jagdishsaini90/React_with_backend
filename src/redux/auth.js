@@ -12,37 +12,29 @@ export const Auth = (state = {
     }, action) => {
     switch (action.type) {
         case ActionTypes.LOGIN_REQUEST:
-            return {...state,
-                isLoading: true,
-                isAuthenticated: false,
-                user: action.creds
-            };
+            return {...state,isLoading: true,isAuthenticated: false,user: action.creds};
+            
         case ActionTypes.LOGIN_SUCCESS:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: true,
-                errMess: '',
-                user : action.payload,
-                token: action.token
-            };
+            return {...state,isLoading: false,isAuthenticated: true,errMess: '',user : action.payload,token: action.token };
+
         case ActionTypes.LOGIN_FAILURE:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: false,
-                errMess: action.message
-            };
+            return {...state,isLoading: false,isAuthenticated: false,errMess: action.message};
+
         case ActionTypes.LOGOUT_REQUEST:
-            return {...state,
-                isLoading: true,
-                isAuthenticated: true
-            };
+            return {...state,isLoading: true,isAuthenticated: true};
+
         case ActionTypes.LOGOUT_SUCCESS:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: false,
-                token: '',
-                user: null
-            };
+            return {...state,isLoading: false,isAuthenticated: false,token: '',user: null};
+
+        case ActionTypes.SIGNUP_REQUEST:
+            return { ...state,isLoading: true,isAuthenticated: false, user: action.creds};
+
+        case ActionTypes.SIGNUP_SUCCESS:
+            return {...state, isLoading: false,isAuthenticated: true,errMess: '',user : action.payload,token: action.token};
+
+        case ActionTypes.SIGNUP_FAILED:
+            return {...state,isLoading: false,isAuthenticated: false,errMess: action.message};
+
         default:
             return state
     }

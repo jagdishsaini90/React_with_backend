@@ -192,7 +192,7 @@ export const loginUser = (creds) => (dispatch) => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(creds))
 
-    return auth.signInWithEmailAndPassword(creds.username, creds.password)
+    return auth.signInWithEmailAndPassword(creds.email, creds.password)
     .then(() => {
         var user = auth.currentUser;
         localStorage.setItem('user', JSON.stringify(user));
@@ -202,6 +202,46 @@ export const loginUser = (creds) => (dispatch) => {
     })
     .catch(error => dispatch(loginError(error.message)))
 };
+
+export const requestSignup = (users) => {
+    return {
+        type: ActionTypes.SIGNUP_REQUEST,
+    }
+}
+  
+export const receiveSignup = (user) => {
+    return {
+        type: ActionTypes.SIGNUP_SUCCESS,
+        payload : user
+    }
+}
+  
+export const SignupError = (message) => {
+    return {
+        type: ActionTypes.SIGNUP_FAILED,
+        payload : message
+    }
+}
+
+export const signupUser = (creds) => (dispatch) => {
+    // We dispatch requestSignup to kickoff the call to the API
+    dispatch(requestSignup(creds))
+    return auth.createUserWithEmailAndPassword(creds.email, creds.password)
+    .then((res) => {
+        var user = res.user;
+        user.updateProfile({
+            displayName : creds.username
+        });
+        console.log(user)
+        localStorage.setItem('user', JSON.stringify(user));
+        // Dispatch the success action
+        dispatch(fetchFavorites());
+        dispatch(receiveSignup(user));
+    })
+    .catch(error => dispatch(SignupError(error.message)))
+};
+
+
 
 export const requestLogout = () => {
     return {

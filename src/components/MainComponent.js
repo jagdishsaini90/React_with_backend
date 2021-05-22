@@ -7,9 +7,10 @@ import DishDetail from './DishdetailComponent';
 import Favorites from './FavoriteComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Signup from './SignupComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders, loginUser, logoutUser, fetchFavorites, googleLogin, postFavorite, deleteFavorite } from '../redux/ActionCreators';
+import { postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders, loginUser, logoutUser, signupUser, fetchFavorites, googleLogin, postFavorite, deleteFavorite } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -33,6 +34,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchLeaders: () => dispatch(fetchLeaders()),
   postFeedback: (feedback) => dispatch(postFeedback(feedback)),
   loginUser: (creds) => dispatch(loginUser(creds)),
+  signupUser : (creds) => dispatch(signupUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
   fetchFavorites: () => dispatch(fetchFavorites()),
   googleLogin: () => dispatch(googleLogin()),
@@ -118,6 +120,7 @@ class Main extends Component {
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
               <Route path="/home" component={HomePage} />
+              <Route path="/signup" component={() => <Signup signUp ={this.props.signupUser} errMess = {this.props.auth.errMess}  /> } />
               <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />}  />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />

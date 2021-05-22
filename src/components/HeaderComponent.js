@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 class Header extends Component {
 
@@ -15,6 +15,7 @@ class Header extends Component {
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleSignup = this.handleSignup.bind(this);
         this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -33,9 +34,12 @@ class Header extends Component {
 
     handleLogin(event) {
         this.toggleModal();
-        this.props.loginUser({username: this.username.value, password: this.password.value});
+        this.props.loginUser({email: this.email.value, password: this.password.value});
         event.preventDefault();
+    }
 
+    handleSignup() {
+        this.toggleModal();
     }
 
     handleGoogleLogin(event) {
@@ -51,7 +55,7 @@ class Header extends Component {
 
     render() {
         return(
-            <React.Fragment>
+            <>
                 <Navbar dark expand="md">
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
@@ -90,13 +94,15 @@ class Header extends Component {
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     { !this.props.auth.user ?
-                                        <Button outline onClick={this.toggleModal}>
+                                    <div className="d-flex flex-row" style={{marginLeft:"13em"}} >
+                                    <Button outline onClick={this.toggleModal} >
                                             <span className="fa fa-sign-in fa-lg"></span> Login
                                             {this.props.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
                                         </Button>
+                                    </div>
                                         :
                                         <div className="d-flex flex-row" style={{marginLeft:"13em"}}>
                                         <div className="navbar-text mr-3">{this.props.auth.user.displayName}</div>
@@ -125,14 +131,14 @@ class Header extends Component {
                         </div>
                     </div>
                 </Jumbotron>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
                     <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
-                    <ModalBody>
+                    <ModalBody className="d-flex flex-column justify-content-center align-items-center">
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Email</Label>
-                                <Input type="text" id="username" name="username"
-                                    innerRef={(input) => this.username = input} />
+                                <Label htmlFor="email">Email</Label>
+                                <Input type="email" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="password">Password</Label>
@@ -146,13 +152,17 @@ class Header extends Component {
                                     Remember me
                                 </Label>
                             </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <Button type="submit" value="submit" color="primary" style={{width:"400px"}}>Login</Button>
                         </Form>
                         <p></p>
-                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
+                        <Button color="danger" style={{width:"400px"}} onClick={this.handleGoogleLogin}>Log In <span className="fa fa-google fa-lg" ></span></Button>
+                        <div className="text-center">
+                            <h4>Need an account?</h4>
+                            <Link style={{width:"400px"}} to="/signup" onClick={this.handleSignup}>Sign Up</Link>
+                        </div>
                     </ModalBody>
                 </Modal>
-            </React.Fragment>
+            </>
         );
     }
 }
