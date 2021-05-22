@@ -3,7 +3,6 @@ import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import { baseUrl} from '../shared/baseUrl';
 
 class Header extends Component {
 
@@ -16,6 +15,7 @@ class Header extends Component {
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }
 
@@ -38,6 +38,12 @@ class Header extends Component {
 
     }
 
+    handleGoogleLogin(event) {
+        this.toggleModal();
+        this.props.googleLogin();
+        event.preventDefault();
+    }
+
     handleLogout() {
         this.props.logoutUser();
     }
@@ -49,7 +55,7 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
                         <NavbarBrand className="mr-auto" href="/">
-                            <img src={baseUrl + 'images/logo.png'} height="30" width="41"
+                            <img src="assets/images/logo.png" height="30" width="41"
                                 alt="Ristorante Con Fusion" />
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
@@ -80,7 +86,7 @@ class Header extends Component {
                                     </NavLink>
                                 </NavItem>
                             </Nav>
-                            <Nav className="m-auto" navbar>
+                            <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     { !this.props.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleModal}>
@@ -92,7 +98,7 @@ class Header extends Component {
                                         </Button>
                                         :
                                         <div>
-                                        <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
+                                        <div className="navbar-text mr-3">{this.props.auth.user.displayName}</div>
                                         <Button outline onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
                                             {this.props.auth.isFetching ?
@@ -123,7 +129,7 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">Email</Label>
                                 <Input type="text" id="username" name="username"
                                     innerRef={(input) => this.username = input} />
                             </FormGroup>
@@ -141,6 +147,8 @@ class Header extends Component {
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Login</Button>
                         </Form>
+                        <p></p>
+                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
                     </ModalBody>
                 </Modal>
             </React.Fragment>
