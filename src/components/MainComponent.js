@@ -120,7 +120,7 @@ class Main extends Component {
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
               <Route path="/home" component={HomePage} />
-              <Route path="/signup" component={() => <Signup signUp ={this.props.signupUser} errMess = {this.props.auth.errMess}  /> } />
+              {this.props.auth.user ? null : <Route path="/signup" component={() => <Signup signUp ={this.props.signupUser} errMess = {this.props.auth.errMess} user={this.props.auth.user} /> } />}
               <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />}  />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />

@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { auth, firestore, fireauth, firebasestore } from '../firebase/firebase';
+import { Alert } from 'reactstrap';
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
@@ -9,7 +10,9 @@ export const addComment = (comment) => ({
 export const postComment = (dishId, rating, comment) => (dispatch) => {
 
     if (!auth.currentUser) {
-        console.log('No user logged in!');
+        <Alert color="danger">
+            <h1>No user logged in!</h1>
+        </Alert>
         return;
     }
 
@@ -38,8 +41,12 @@ export const postComment = (dishId, rating, comment) => (dispatch) => {
                 }
             });
     })
-    .catch(error => { console.log('Post comments ', error.message);
-        alert('Your comment could not be posted\nError: '+ error.message); })
+    .catch(error => { 
+            console.log('Post comments ', error.message);
+            <Alert color="danger">
+                <h1>Your comment could not be posted\nError: '+ error.message</h1>
+            </Alert> 
+        });
 }
 
 export const fetchDishes = () => (dispatch) => {
@@ -164,8 +171,18 @@ export const addLeaders = (leaders) => ({
 export const postFeedback = (feedback) => (dispatch) => {
         
     return firestore.collection('feedback').add(feedback)
-    .then(response => { console.log('Feedback', response); alert('Thank you for your feedback!'); })
-    .catch(error =>  { console.log('Feedback', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
+    .then(response => { 
+        console.log('Feedback', response); 
+        <Alert color="success">
+        <h1>Thank you for your feedback!</h1>
+        </Alert>; 
+    })
+    .catch(error =>  { 
+        console.log('Feedback', error.message); 
+        <Alert color="danger">
+            <h1>'Your feedback could not be posted\nError: '+error.message</h1>
+        </Alert> 
+    });
 };
 
 export const requestLogin = () => {
@@ -203,7 +220,7 @@ export const loginUser = (creds) => (dispatch) => {
     .catch(error => dispatch(loginError(error.message)))
 };
 
-export const requestSignup = (users) => {
+export const requestSignup = () => {
     return {
         type: ActionTypes.SIGNUP_REQUEST,
     }
@@ -232,7 +249,6 @@ export const signupUser = (creds) => (dispatch) => {
         user.updateProfile({
             displayName : creds.username
         });
-        console.log(user)
         localStorage.setItem('user', JSON.stringify(user));
         // Dispatch the success action
         dispatch(fetchFavorites());
@@ -260,6 +276,9 @@ export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout())
     auth.signOut().then(() => {
         // Sign-out successful.
+        <Alert color="danger">
+            <h1>Sign out successful</h1>
+        </Alert>
       }).catch((error) => {
         // An error happened.
       });
@@ -271,7 +290,9 @@ export const logoutUser = () => (dispatch) => {
 export const postFavorite = (dishId) => (dispatch) => {
 
     if (!auth.currentUser) {
-        console.log('No user logged in!');
+        <Alert color="danger">
+            <h1>No user logged In!!!</h1>
+        </Alert>
         return;
     }
 
@@ -286,7 +307,9 @@ export const postFavorite = (dishId) => (dispatch) => {
                     dispatch(fetchFavorites())
                 } else {
                     // doc.data() will be undefined in this case
-                    console.log("No such document!");
+                    <Alert color="danger">
+                        <h1>No such Document exists</h1>
+                    </Alert>
                 }
             });
     })
@@ -304,9 +327,7 @@ export const deleteFavorite = (dishId) => (dispatch) => {
 
     return firestore.collection('favorites').where('user', '==', user.uid).where('dish', '==', dishId).get()
     .then(snapshot => {
-        console.log(snapshot);
         snapshot.forEach(doc => {
-            console.log(doc.id);
             firestore.collection('favorites').doc(doc.id).delete()
             .then(() => {
                 dispatch(fetchFavorites());
@@ -319,7 +340,9 @@ export const deleteFavorite = (dishId) => (dispatch) => {
 export const fetchFavorites = () => (dispatch) => {
 
     if (!auth.currentUser) {
-        console.log('No user logged in!');
+        <Alert color="danger">
+            <h1>No user logged In!!!</h1>
+        </Alert>
         return;
     }
 
@@ -334,7 +357,6 @@ export const fetchFavorites = () => (dispatch) => {
             const data = doc.data()
             favorites.dishes.push(data.dish);
         });
-        console.log(favorites);
         return favorites;
     })
     .then(favorites => dispatch(addFavorites(favorites)))

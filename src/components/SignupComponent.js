@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { useHistory } from 'react-router-dom'
 
-const Signup = ({ signUp, errMess }) => {
+const Signup = ({ signUp, errMess, user }) => {
 
     const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -18,6 +18,10 @@ const Signup = ({ signUp, errMess }) => {
 
     if(errMess) {
       setError(errMess)
+    }
+
+    if(user != null) {
+        history.push('/home');
     }
 
     return (

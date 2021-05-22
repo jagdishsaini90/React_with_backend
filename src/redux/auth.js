@@ -5,7 +5,7 @@ import * as ActionTypes from './ActionTypes';
 // we would also want a util to check if the token is expired.
 export const Auth = (state = {
         isLoading: false,
-        isAuthenticated: localStorage.getItem('token') ? true : false,
+        isAuthenticated: false,
         token: localStorage.getItem('token'),
         user: localStorage.getItem('creds') ? JSON.parse(localStorage.getItem('creds')) : null,
         errMess: null
@@ -15,7 +15,7 @@ export const Auth = (state = {
             return {...state,isLoading: true,isAuthenticated: false,user: action.creds};
             
         case ActionTypes.LOGIN_SUCCESS:
-            return {...state,isLoading: false,isAuthenticated: true,errMess: '',user : action.payload,token: action.token };
+            return {...state,isLoading: false,isAuthenticated: true,errMess: '',user : action.payload };
 
         case ActionTypes.LOGIN_FAILURE:
             return {...state,isLoading: false,isAuthenticated: false,errMess: action.message};
@@ -30,7 +30,7 @@ export const Auth = (state = {
             return { ...state,isLoading: true,isAuthenticated: false, user: action.creds};
 
         case ActionTypes.SIGNUP_SUCCESS:
-            return {...state, isLoading: false,isAuthenticated: true,errMess: '',user : action.payload,token: action.token};
+            return {...state, isLoading: false,isAuthenticated: true,errMess: '',user : action.payload};
 
         case ActionTypes.SIGNUP_FAILED:
             return {...state,isLoading: false,isAuthenticated: false,errMess: action.message};
